@@ -27,6 +27,7 @@ setup(
 		'arrow',
 		'xmltodict',
 		'PyYAML',
+        'argcomplete',
 		'Baubles',
 	],
 )
