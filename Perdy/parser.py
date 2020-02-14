@@ -6,7 +6,7 @@ from io import StringIO
 from xml.dom import minidom
 
 from Baubles.Colours import Colours
-from pretty import *
+#from Perdy.pretty import *
 
 tokens = [
 	['&amp;' , '####amp####'],

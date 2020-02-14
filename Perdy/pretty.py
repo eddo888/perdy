@@ -8,7 +8,7 @@ from inspect import isfunction
 from enum import Enum, unique
 
 from Baubles.Colours import Colours
-from diff import diff
+from Perdy.diff import diff
 
 
 #================================================================

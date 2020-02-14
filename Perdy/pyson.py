@@ -16,8 +16,8 @@ and Perl version by Kate Rhodes at:
 
 import sys, os, re, argparse, argcomplete, json, jsonpath, codecs
 
-from eddo import *
-from pretty import *
+from Perdy.eddo import *
+from Perdy.pretty import *
 
 horizon = buildHorizon()
 
