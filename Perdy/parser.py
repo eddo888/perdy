@@ -1,11 +1,12 @@
 #!/usr/bin/env python2
 
-import sys, re, os, StringIO, unicodedata, xml.parsers.expat
+import sys, re, os, unicodedata, xml.parsers.expat
 
+from io import StringIO
 from xml.dom import minidom
 
 from Baubles.Colours import Colours
-from Tools.pretty import *
+from pretty import *
 
 tokens = [
 	['&amp;' , '####amp####'],
@@ -284,7 +285,7 @@ class MyParser:
 		return
 		
 	def characterDataHandler(self, data):
-		data = unicodedata.normalize('NFKD', data).encode('ascii','ignore')
+		data = str(unicodedata.normalize('NFKD', data).encode('ascii','ignore'))
 		
 		if not self.state == self.stateCDataStart and not self.state == self.stateCDataLast:
 			data = escapeData(data)
@@ -542,11 +543,11 @@ class MyParser:
 
 def main():
 	
-	xml=open('../scripts/_test/Sample.xml').read()
+	xml=open('../test/Sample.xml').read()
 	print(xml)
 	print
 	
-	sio = StringIO.StringIO(xml)
+	sio = StringIO(xml)
 	doParse(sio, sys.stdout, colour=True, rformat=True)
 		
 if __name__ == '__main__': main()

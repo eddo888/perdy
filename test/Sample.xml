@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<prefix:root 
+    xmlns:prefix="http://www.mucken.com.au/Sample" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xsi:schemaLocation="http://www.mucken.com.au/Sample Sample.xsd" 
+    attr="bob &lt; &gt; &amp; &quot; &apos; char"
+>
+    <prefix:child>stuff &lt;inside&gt; &quot; &apos;</prefix:child>
+    <prefix:child>hello</prefix:child>
+
+    <prefix:child there="normal"/>
+
+
+    <prefix:daughter><![CDATA[<hello & ' " &amp; there/>]]></prefix:daughter>
+    <typed xsi:type="xs:string">stuff</typed>
+</prefix:root>
