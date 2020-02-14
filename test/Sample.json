@@ -1,0 +1,21 @@
+{
+  "prefix:root" : {
+    "@attr" : "bob < > & \" ' char",
+    "@xmlns:prefix" : "http://www.mucken.com.au/Sample",
+    "@xmlns:xs" : "http://www.w3.org/2001/XMLSchema",
+    "@xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance",
+    "@xsi:schemaLocation" : "http://www.mucken.com.au/Sample Sample.xsd",
+    "prefix:child" : [
+      "stuff <inside> \" '",
+      "hello",
+      {
+        "@there" : "normal"
+      }
+    ],
+    "prefix:daughter" : "<hello & ' \" &amp; there/>",
+    "typed" : {
+      "#text" : "stuff",
+      "@xsi:type" : "xs:string"
+    }
+  }
+}

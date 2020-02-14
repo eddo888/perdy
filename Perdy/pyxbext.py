@@ -2,7 +2,7 @@
 
 import os,re,sys
 
-from Tools.colours import Colours
+from Baubles.Colours import Colours
 
 colours = Colours(colour=True)
         

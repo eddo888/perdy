@@ -16,8 +16,8 @@ and Perl version by Kate Rhodes at:
 
 import sys, os, re, argparse, argcomplete, json, jsonpath, codecs
 
-from Tools.eddo import *
-from Tools.pretty import *
+from eddo import *
+from pretty import *
 
 horizon = buildHorizon()
 
@@ -150,7 +150,7 @@ def main():
         
     return
 
-if __name__ == '__main__':main()
+if __name__ == '__main__': main()
 
 
 
