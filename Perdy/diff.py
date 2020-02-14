@@ -41,7 +41,7 @@ def diff(lhs,rhs):
     if os.path.isfile(lhs):
         flhs = open(lhs).readlines()
     else:
-        flhs = map(lambda x:'%s\n'%x, lhs.split('\n'))
+        flhs = list(map(lambda x:'%s\n'%x, lhs.split('\n')))
         lhs = '<'
         
     if os.path.isdir(rhs):
@@ -49,7 +49,7 @@ def diff(lhs,rhs):
     if os.path.isfile(rhs):
         frhs = open(rhs).readlines()
     else:
-        frhs = map(lambda x:'%s\n'%x, rhs.split('\n'))
+        frhs = list(map(lambda x:'%s\n'%x, rhs.split('\n')))
         rhs = '>'
         
     diffs = unified_diff(
@@ -63,7 +63,7 @@ def diff(lhs,rhs):
 
     colours = Colours()
     
-    for line in diffs:
+    for line in list(diffs):
         if line.startswith('+'):
             sys.stdout.write(colours.Green)
         if line.startswith('-'):
@@ -77,6 +77,11 @@ def diff(lhs,rhs):
 def main():
     args = argue()
     diff(args.lhs.rstrip("/"), args.rhs.rstrip("/"))
+
+
+#_____________________________________________________
+def test():
+    diff("one\ntwo\nthree","one\nthree\nfour")
 
 
 #_____________________________________________________
