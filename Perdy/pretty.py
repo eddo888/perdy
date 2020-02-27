@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import sys, os, re, arrow, json, yaml, xmltodict, collections
 
@@ -95,7 +95,7 @@ class PrettyPrinter(object):
                     ]))
 
             if len(d) > 0:
-                width = max(map(lambda x : len(str(x)), d.keys()))
+                width = max([len(str(x)) for x in list(d.keys())])
             else:
                 width = 0
                 
@@ -507,12 +507,12 @@ you: 0"""
     
     if True: 
         prettyPrint(prettyPyson)
-        print
-        print
+        print()
+        print()
         
         prettyPrint(prettyPyson, verbose=False, style=Style.YAML)
-        print
-        print
+        print()
+        print()
     
     so = StringIO()
     printer = PrettyPrinter(output=so, colour=False, sorted=True, style=Style.YAML)
@@ -560,13 +560,13 @@ you: 0"""
     #assert(prettyNotNull==nn)
     
     if False:
-        print
+        print()
         prettyPrint(pyson, verbose=False, style=Style.XML, colour=True)
         
    
     if False:
-        print
-        print
+        print()
+        print()
         dad = TestPrettyObject()
         dad.name = 'Dad'
     
@@ -591,3 +591,4 @@ you: 0"""
 
 #================================================================
 if __name__ == '__main__': main()
+

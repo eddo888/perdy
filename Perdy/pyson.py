@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 # PYTHON_ARGCOMPLETE_OK
 
@@ -51,10 +51,10 @@ if inplace:
 def dump(obj,output,colour):
     if args.text:
         if type(obj) == dict:
-            for row in range(len(obj[obj.keys()[0]])):
-                output.write('%s\n'%','.join(map(lambda x:obj[x][row] or '', obj.keys())))
+            for row in range(len(obj[list(obj.keys())[0]])):
+                output.write('%s\n'%','.join([obj[x][row] or '' for x in list(obj.keys())]))
         elif type(obj) == list:
-            output.write('\n'.join(map(lambda x:str(x), obj)))
+            output.write('\n'.join([str(x) for x in obj]))
         else:
             output.write('%s\n'%obj)
     elif args.flat:
@@ -67,7 +67,7 @@ def dump(obj,output,colour):
 
 def sort(object):
     if type(object) == dict:
-        for key in object.keys():
+        for key in list(object.keys()):
             if type(object[key]) == list:
                 object[key] = sorted(object[key])
             else:
@@ -151,6 +151,7 @@ def main():
     return
 
 if __name__ == '__main__': main()
+
 
 
 

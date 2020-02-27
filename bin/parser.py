@@ -5,7 +5,7 @@
 # http://mikekneller.com/kb/python/libxml2python/part1
 
 import re,sys,os,codecs
-import argparse, argcomplete, StringIO
+import argparse, argcomplete, io
 
 from Perdy.eddo import *
 from Perdy.parser import *
@@ -48,13 +48,13 @@ def main():
     foutput = args.output
     if foutput:
         colour = False
-        print foutput
+        print(foutput)
         output = codecs.open(foutput,'w',encoding=args.encoding)
 
     houtput = args.html
     if houtput:
         html = True
-        print houtput
+        print(houtput)
         output = codecs.open(houtput,'w',encoding=args.encoding)
     else:
         html = False
@@ -83,12 +83,12 @@ def main():
                 os.rename(f,b)
                 output = codecs.open(f,'w',encoding=args.encoding)
                 fp = codecs.open(b,encoding=args.encoding)
-                print f
+                print(f)
             else:
                 if args.bar:
-                    print horizon
+                    print(horizon)
                 if title:
-                    print f
+                    print(f)
 
                 fp = codecs.open(arg,encoding=args.encoding)
 
@@ -114,7 +114,7 @@ def main():
                     os.unlink(b)
 
     else:
-        fp = StringIO.StringIO(sys.stdin.read())
+        fp = io.StringIO(sys.stdin.read())
         doParse(
             fp,
             output,
@@ -136,4 +136,5 @@ def main():
     return
     
 if __name__ == '__main__': main()
+
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import sys, os, re, json, argparse, time, pytz
 
@@ -41,7 +41,7 @@ def diff(lhs,rhs):
     if os.path.isfile(lhs):
         flhs = open(lhs).readlines()
     else:
-        flhs = list(map(lambda x:'%s\n'%x, lhs.split('\n')))
+        flhs = list(['%s\n'%x for x in lhs.split('\n')])
         lhs = '<'
         
     if os.path.isdir(rhs):
@@ -49,7 +49,7 @@ def diff(lhs,rhs):
     if os.path.isfile(rhs):
         frhs = open(rhs).readlines()
     else:
-        frhs = list(map(lambda x:'%s\n'%x, rhs.split('\n')))
+        frhs = list(['%s\n'%x for x in rhs.split('\n')])
         rhs = '>'
         
     diffs = unified_diff(
@@ -86,4 +86,5 @@ def test():
 
 #_____________________________________________________
 if __name__ == '__main__': main()
+
 

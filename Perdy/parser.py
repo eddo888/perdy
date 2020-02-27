@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import sys, re, os, unicodedata, xml.parsers.expat
 
@@ -545,10 +545,11 @@ def main():
 	
 	xml=open('../test/Sample.xml').read()
 	print(xml)
-	print
+	print()
 	
 	sio = StringIO(xml)
 	doParse(sio, sys.stdout, colour=True, rformat=True)
 		
 if __name__ == '__main__': main()
+
 

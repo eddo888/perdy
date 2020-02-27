@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 # $Date$
 # $Revision$
@@ -26,7 +26,8 @@ def buildHorizon(char='-'):
 
 def fixString(dirty):
   clean = dirty
-  for replacement in replacements.keys():
+  for replacement in list(replacements.keys()):
     clean = clean.replace(replacement,replacements[replacement])
   return clean
+
 
