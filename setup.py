@@ -8,7 +8,7 @@ pwd = path.abspath(path.dirname(__file__))
 with codecs.open(path.join(pwd, 'README.md'), 'r', encoding='utf8') as input:
     long_description = input.read()
 
-version='1.3'
+version='1.4'
 	
 setup(
 	name='Perdy',
@@ -31,4 +31,9 @@ setup(
         'argcomplete',
 		'Baubles',
 	],
+	scripts=[
+		'bin/parser.py',
+		'bin/pyson.py',
+	],
+)
 )
