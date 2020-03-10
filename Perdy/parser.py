@@ -23,6 +23,7 @@ def escapeData(data):
 		data = data.replace(d[0],d[1])
 	return data
 
+
 def doParse(
 	input,
 	output,
@@ -53,6 +54,7 @@ def doParse(
 	del myParser
 	return
 
+
 def printXML(xml, colour=False, areturn=False, rformat=False,output=sys.stdout, encoding=None, omitdecl=False):
 	myParser = MyParser(
 		colour=colour, 
@@ -65,6 +67,7 @@ def printXML(xml, colour=False, areturn=False, rformat=False,output=sys.stdout, 
 	myParser.parser.Parse(xml)
 	del myParser
 	return
+
 
 class MyParser:
 	indent = 0
@@ -129,17 +132,6 @@ class MyParser:
 
 		return
 
-##parser.ElementDeclHandler(name, model)
-##parser.AttlistDeclHandler(elname, attname, type, default, required)
-##parser.UnparsedEntityDeclHandler(entityName, base, systemId, publicId, notationName)
-##parser.EntityDeclHandler(entityName, is_parameter_entity, value, base, systemId, publicId, notationName)
-##parser.NotationDeclHandler(notationName, base, systemId, publicId)
-##parser.StartNamespaceDeclHandler(prefix, uri)
-##parser.EndNamespaceDeclHandler(prefix)
-##parser.DefaultHandler(data)
-##parser.DefaultHandlerExpand(data)
-##parser.NotStandaloneHandler()
-##parser.ExternalEntityRefHandler(context, base, systemId, publicId)
 
 	def close(self):
 		if self.parser:
@@ -147,6 +139,7 @@ class MyParser:
 			del self.parser
 		return
 		
+
 	def startElementHandler(self, name, attrs):
 		if self.rformat:
 			self.areturn = True
@@ -219,6 +212,7 @@ class MyParser:
 			self.areturn = False
 		return
 			
+
 	def endElementHandler(self, name):
 		if ':' in name:
 			(pre,ele) = tuple(name.split(':'))
@@ -284,8 +278,9 @@ class MyParser:
 		self.state = self.stateEndLast
 		return
 		
+
 	def characterDataHandler(self, data):
-		data = str(unicodedata.normalize('NFKD', data).encode('ascii','ignore'))
+		data = unicodedata.normalize('NFKD', data)
 		
 		if not self.state == self.stateCDataStart and not self.state == self.stateCDataLast:
 			data = escapeData(data)
@@ -331,6 +326,7 @@ class MyParser:
 
 		return
 	
+
 	def commentHandler(self, data):
 		if self.state == self.stateStartLast:
 			self.output.write(''.join([
@@ -355,6 +351,7 @@ class MyParser:
 		self.state = self.stateEndLast
 		return
 		
+
 	def startCdataSectionHandler(self):
 		if not self.state == self.stateStartLast:
 			self.output.write((self.indent) * self.indentChar)
@@ -379,6 +376,7 @@ class MyParser:
 		self.state = self.stateCDataStart
 		return
 	
+
 	def endCdataSectionHandler(self):
 		self.output.write(''.join([
 			self.colours.White ,
@@ -390,6 +388,7 @@ class MyParser:
 		self.state = self.stateCDataEnd
 		return
 	
+
 	def xmlDeclHandler(self, version, encoding, standalone):
 		if self.omitdecl: return
 		
@@ -441,6 +440,7 @@ class MyParser:
 		self.output.flush()
 		return
 		
+
 	def startDoctypeDeclHandler(self, doctypeName, systemId, publicId, has_internal_subset):
 		if self.omitdecl: return
 		
@@ -500,9 +500,11 @@ class MyParser:
 			self.output.flush()
 		return
 		
+
 	def endDoctypeDeclHandler(self):
 		return
 		
+
 	def processingInstructionHandler(self, target, data):
 		self.output.write(''.join([
 			(self.indent) * self.indentChar,
@@ -541,6 +543,7 @@ class MyParser:
 		self.output.flush()
 		return
 
+
 def main():
 	
 	xml=open('../test/Sample.xml').read()
@@ -550,6 +553,7 @@ def main():
 	sio = StringIO(xml)
 	doParse(sio, sys.stdout, colour=True, rformat=True)
 		
+
 if __name__ == '__main__': main()
 
 
