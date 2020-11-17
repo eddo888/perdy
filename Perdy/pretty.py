@@ -3,7 +3,7 @@
 import sys, os, re, arrow, json, yaml, xmltodict, collections
 
 from io import StringIO
-from datetime import datetime
+from datetime import datetime, date, time
 from inspect import isfunction
 from enum import Enum, unique
 from dotmap import DotMap
@@ -265,13 +265,16 @@ class PrettyPrinter(object):
 
 		#........................................................
 		elif \
-			type(d) == datetime \
+			type(d) in [datetime] \
 		:
 			if self.style == Style.YAML:
 				self.output.write(' ')
 			self.output.write(self.colours.Red)
-			a = arrow.get(d).to('AEST').naive
-			self.output.write('"%s"'%str(a).lower())
+			a = str(arrow.get(str(d)).to('AEST'))
+			if self.style == Style.JSON:
+				self.output.write(f'"{a}"')
+			else:
+				self.output.write(a)
 			self.output.write(self.colours.Off)
 
 		#........................................................
@@ -279,7 +282,10 @@ class PrettyPrinter(object):
 			if self.style == Style.YAML:
 				self.output.write(' ')
 			self.output.write(self.colours.Red)
-			self.output.write('%s'%d)
+			if self.style == Style.JSON:
+				self.output.write('"%s"'%d)
+			else:
+				self.output.write('%s'%d)
 			self.output.write(self.colours.Off)
 
 		return
