@@ -167,16 +167,18 @@ class PrettyPrinter(object):
 						self.output.write('\n')
 						if type(parent) == list:
 							self.output.write(indent[:-2])
+							
 				if self.style == Style.XML:
 					self.output.write(''.join([
 						self.colours.Off,
-						'%s  '%indent,
+						#'%s  '%indent,
 						'</',
 						self.colours.Teal,
 						'%s'%key,
 						self.colours.Off,
 						'>\n',
 					]))
+					
 				if self.style == Style.JSON:
 					if i < (len(keys) - 1):
 						self.output.write(',')
@@ -238,7 +240,12 @@ class PrettyPrinter(object):
 				
 				if self.style == Style.JSON:
 					_new = _new.replace('"','\\"')
-				
+
+				if self.style == Style.XML:
+					_new = _new.replace('&','&amp;')
+					_new = _new.replace('>','&gt;')
+					_new = _new.replace('<','&lt;')
+					
 				self.output.write(_new)
 				self.output.write(self.colours.Off)
 				if self.style == Style.JSON and len(self.walked) == 0:
