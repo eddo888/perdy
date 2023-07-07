@@ -446,29 +446,42 @@ class MyParser:
 		
 		self.output.write((self.indent) * self.indentChar)
 		if not publicId:
-			self.output.write(''.join([
-				self.colours.White ,
-				self.lt ,
-				'!DOCTYPE ' ,
-				self.colours.Off ,
-				self.colours.White ,
-				doctypeName ,
-				self.colours.Off ,
-				self.colours.White ,
-				' SYSTEM ' ,
-				self.quot ,
-				self.colours.Off ,
-				self.colours.Green ,
-				systemId ,
-				self.colours.Off ,
-				self.colours.White ,
-				self.quot ,
-				self.quot ,
-				self.gt ,
-				self.colours.Off ,
-				self.lf ,
-			]))
-			self.output.flush()
+			if not systemId:
+				self.output.write(''.join([
+					self.colours.White ,
+					self.lt ,
+					'!DOCTYPE ' ,
+					self.colours.Off ,
+					self.colours.White ,
+					doctypeName or '',
+					self.colours.Off ,
+					self.gt ,
+					self.colours.Off ,
+					self.lf ,
+				]))
+			else:
+				self.output.write(''.join([
+					self.colours.White ,
+					self.lt ,
+					'!DOCTYPE ' ,
+					self.colours.Off ,
+					self.colours.White ,
+					doctypeName or '',
+					self.colours.Off ,
+					self.colours.White ,
+					' SYSTEM ' ,
+					self.quot ,
+					self.colours.Off ,
+					self.colours.Green ,
+					systemId or '',
+					self.colours.Off ,
+					self.colours.White ,
+					self.quot ,
+					self.quot ,
+					self.gt ,
+					self.colours.Off ,
+					self.lf ,
+				]))
 		else:
 			self.output.write(''.join([
 				self.colours.White ,
@@ -497,7 +510,7 @@ class MyParser:
 				self.colours.Off ,
 				self.lf ,
 			]))
-			self.output.flush()
+		self.output.flush()
 		return
 		
 

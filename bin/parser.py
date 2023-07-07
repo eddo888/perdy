@@ -7,6 +7,10 @@
 import re,sys,os,codecs
 import argparse, argcomplete, io
 
+if os.path.dirname(sys.argv[0]) == '.':
+	sys.path.insert(0, '..')
+	
+
 from Perdy.eddo import *
 from Perdy.parser import *
 from Perdy.pretty import *

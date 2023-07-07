@@ -2,3 +2,6 @@
 /MANIFEST
 /*.egg-info
 .idea
+.dbeaver
+.project
+.pydevproject
