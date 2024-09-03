@@ -531,8 +531,8 @@ class MyParser:
 		pn = re.compile('\s*(\S+)=[\'"]([^\'"]*)[\'"]\s*')
 		b = pn.split(data)
 		while '' in b: b.remove('')
-		for i in range(len(b)/2):
-			self.output.write(''.join([
+		for i in range(int(len(b)/2)):
+			self.output.write(' '+(''.join([
 				self.colours.Red ,
 				b[2*i] ,
 				self.colours.Off ,
@@ -544,7 +544,7 @@ class MyParser:
 				b[2*i],
 				self.colours.Off ,
 				self.quot ,
-			]))
+			])))
 			self.output.flush()
 		self.output.write(''.join([
 			self.colours.White ,
