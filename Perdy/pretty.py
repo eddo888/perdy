@@ -34,7 +34,8 @@ class PrettyPrinter(object):
 		align=False, 
 		sorted=False, 
 		verbose=False,
-		ignore=False, 
+		ignore=False,
+		carriage=True,
 		style=Style.JSON
 	):
 		self.output = output
@@ -43,16 +44,24 @@ class PrettyPrinter(object):
 		self.sorted = sorted
 		self.verbose = verbose
 		self.ignore = ignore
+		self.carriage = carriage
 		self.colours = Colours(colour=colour, html=html)
 		self.walked = []
 
+		if style == Style.YAML or self.carriage:
+			self.cr = '\n'
+			self.sp = '  '
+		else:
+			self.cr = ''
+			self.sp = ''
+			
 	def __del__(self):
 		self.colours.__del__()
 		
 	#____________________________________________________________
 	def prettify(self, d, indent='', parent=None):
 		t='%s'%type(d)
-		
+
 		name = '%s'%d.__class__.__name__
 		if self.verbose:
 			sys.stderr.write('<%s type="%s"/>\n'%(name,t))
@@ -84,11 +93,10 @@ class PrettyPrinter(object):
 					self.colours.Purple,
 					'{',
 					self.colours.Off,
-					'\n',
+					self.cr,
 				]))
 			
 			if self.style == Style.XML:
-				
 				if not parent:
 					self.output.write(''.join([
 						'%s'%indent,
@@ -97,7 +105,8 @@ class PrettyPrinter(object):
 						self.colours.Teal,
 						'xml',
 						self.colours.Off,
-						'>\n',
+						'>',
+						self.cr
 					]))
 
 			if len(d) > 0:
@@ -114,6 +123,8 @@ class PrettyPrinter(object):
 			for i in list(range(len(keys))):
 				key = keys[i]
 
+				# if key.startswith('@'): ...
+				
 				if self.align:
 					padding = width-len(key)
 				else:
@@ -123,22 +134,35 @@ class PrettyPrinter(object):
 					continue
 									   
 				if self.style == Style.JSON:
-					self.output.write('%s  '%indent)					
+					self.output.write('%s%s'%(indent, self.sp))					
 					self.output.write('"')
+					
 				if self.style == Style.XML:
 					# @ and # tokens
-					self.output.write(''.join([
-						self.colours.Off,
-						'%s  '%indent,
-						'<',
-						self.colours.Teal,
-						'%s'%key,
-						self.colours.Off,
-						'>',
-					]))
+					if False: #key.startswith('@'):
+						self.output.write(''.join([
+							self.colours.Off,
+							'%s%s'%(indent,self.sp),
+							'',
+						   	self.colours.Green,
+						   	'%s'%key.lstrip('@'),
+					   		self.colours.Off,
+				   			'=',
+			   			]))
+					else:
+						self.output.write(''.join([
+							self.colours.Off,
+							self.cr,
+							'%s%s'%(indent,self.sp),
+							'<',
+						   	self.colours.Teal,
+						   	'%s'%key,
+					   		self.colours.Off,
+				   			'>',
+			   			]))
 				if self.style == Style.YAML:
 					if type(parent) == list and not first:
-						self.output.write('  ')
+						self.output.write(self.sp)
 					if type(parent) in [dict, collections.OrderedDict]:
 						if first:
 							self.output.write('\n')
@@ -158,9 +182,9 @@ class PrettyPrinter(object):
 				if self.style == Style.YAML:
 					self.output.write(':%s'%(' '*padding))
 				if self.style == Style.JSON:
-					self.output.write('"%s : '%(' '*padding))
+					self.output.write('"%s:'%(' '*padding))
 
-				self.prettify(d[key], indent='%s  '%indent, parent=d)
+				self.prettify(d[key], indent='%s%s'%(indent,self.sp), parent=d)
 								
 				if self.style == Style.YAML:
 					if i < (len(keys)-1):
@@ -176,13 +200,14 @@ class PrettyPrinter(object):
 						self.colours.Teal,
 						'%s'%key,
 						self.colours.Off,
-						'>\n',
+						'>',
+						self.cr,
 					]))
 					
 				if self.style == Style.JSON:
 					if i < (len(keys) - 1):
 						self.output.write(',')
-					self.output.write('\n')
+					self.output.write(self.cr)
 					
 			if self.style == Style.JSON:
 				self.output.write('%s'%indent)
@@ -199,7 +224,8 @@ class PrettyPrinter(object):
 						self.colours.Teal,
 						'xml',
 						self.colours.Off,
-						'>\n',
+						'>',
+   						self.cr,
 					]))
 					
 		#........................................................
@@ -209,9 +235,9 @@ class PrettyPrinter(object):
 			type(d) == list \
 		:
 			if len(self.walked) == 0:
-				self.bracket(d,'[',']','Teal','%s  '%indent)
+				self.bracket(d,'[',']','Teal','%s%s'%(indent,self.sp))
 			else:
-				self.bracket(d,'','','Teal','  %s'%indent)
+				self.bracket(d,'','','Teal','%s%s'%(self.sp,indent))
 				
 		#........................................................
 		elif \
@@ -220,9 +246,9 @@ class PrettyPrinter(object):
 			type(d) == tuple \
 		:
 			if len(self.walked) == 0:
-				self.bracket(d,'(',')','Orange','  %s'%indent)
+				self.bracket(d,'(',')','Orange','%s%s'%(self.sp,indent))
 			else:
-				self.bracket(d,'','','Orange','  %s'%indent)
+				self.bracket(d,'','','Orange','%s%s'%(indent, self.sp))
 				
 		#........................................................
 		elif \
@@ -269,29 +295,34 @@ class PrettyPrinter(object):
 		:
 			if self.style == Style.YAML:
 				self.output.write(' ')
-			self.output.write(self.colours.Red)
 			a = str(arrow.get(str(d)).to('AEST'))
 			if self.style == Style.JSON:
-				self.output.write(f'"{a}"')
+				self.output.write(f'"')
+				self.output.write(self.colours.Red)
+				self.output.write(f'{a}')
+				self.output.write(self.colours.Off)
+				self.output.write('"')
 			else:
 				self.output.write(a)
-			self.output.write(self.colours.Off)
 
 		#........................................................
 		else:
 			if self.style == Style.YAML:
 				self.output.write(' ')
-			self.output.write(self.colours.Red)
 			if self.style == Style.JSON:
-				self.output.write('"%s"'%d)
+				self.output.write(f'"')
+				self.output.write(self.colours.Red)
+				self.output.write(f'{d}')
+				self.output.write(self.colours.Off)
+				self.output.write('"')
 			else:
 				self.output.write('%s'%d)
-			self.output.write(self.colours.Off)
 
 		return
 		
 	#____________________________________________________________
 	def bracket(self, d, start, end, colour, indent):
+
 		if self.style == Style.JSON:
 			self.output.write(''.join([
 				getattr(self.colours,colour),
@@ -301,16 +332,18 @@ class PrettyPrinter(object):
 		if self.style == Style.XML:
 			self.output.write(''.join([
 				self.colours.Off,
-				'\n%s<'%indent,
+				self.cr,
+				'%s<'%indent,
 				self.colours.Teal,
 				'list',
 				self.colours.Off,
 				'>',
-			]))	
-		self.output.write('\n')
+			]))
+		if self.style == Style.YAML:
+			self.output.write('\n')
 		
 		if self.style == Style.YAML and len(indent) == 0:
-			indent = '  '
+			indent = self.sp
 			 
 		for i in range(len(d)):
 
@@ -323,14 +356,14 @@ class PrettyPrinter(object):
 			if self.style == Style.XML:
 				self.output.write(''.join([
 					self.colours.Off,
-					'%s  '%indent,
+					'%s%s'%(indent,self.sp),
 					'<',
 					self.colours.Teal,
 					'item',
 					self.colours.Off,
 					'>',
 				]))
-				self.prettify(d[i], indent='%s  '%indent, parent=d)  
+				self.prettify(d[i], indent='%s%s'%(indent,self.sp), parent=d)  
 				
 			if self.style == Style.JSON:
 				self.output.write('%s'%indent)
@@ -349,11 +382,12 @@ class PrettyPrinter(object):
 					self.colours.Teal,
 					'item',
 					self.colours.Off,
-					'>\n',
+					'>',
+					self.cr
 				]))   
 				
 			if self.style == Style.JSON:
-				self.output.write('\n')
+				self.output.write(self.cr)
 				
 		if self.style == Style.JSON:
 			self.output.write('%s'%indent[:-2])
@@ -369,11 +403,10 @@ class PrettyPrinter(object):
 				self.colours.Teal,
 				'list',
 				self.colours.Off,
-				'>\n',
+				'>',
+				self.cr,
 			]))	
 		return
-
-
 
 #================================================================
 def prettyPrint(
@@ -385,6 +418,7 @@ def prettyPrint(
 	sorted=False, 
 	verbose=False, 
 	ignore=False,
+	carriage=True,
 	style=Style.JSON
 ):
 	printer = PrettyPrinter(
@@ -394,7 +428,8 @@ def prettyPrint(
 		html=html, 
 		sorted=sorted, 
 		verbose=verbose,
-		ignore=ignore, 
+		ignore=ignore,
+		carriage=carriage,
 		style=style
 	)
 	printer.prettify(object)
@@ -409,7 +444,8 @@ def prettyPrintLn(
 	html=False, 
 	sorted=False, 
 	verbose=False,
-	ignore=False, 
+	ignore=False,
+	carriage=True,
 	style=Style.JSON
 ):
 	prettyPrint(
@@ -420,7 +456,8 @@ def prettyPrintLn(
 		html=html, 
 		sorted=sorted, 
 		verbose=verbose,
-		ignore=ignore, 
+		ignore=ignore,
+		carriage=carriage,
 		style=style
 	)
 	output.write('\n')
