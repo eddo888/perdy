@@ -4,10 +4,10 @@
 
 '''
 An XPath for JSON
- 
+
 A port of the Perl, and JavaScript versions of JSONPath
 see http://goessner.net/articles/JsonPath/
- 
+
 Based on on JavaScript version by Stefan Goessner at:
         http://code.google.com/p/jsonpath/
 and Perl version by Kate Rhodes at:
@@ -47,7 +47,7 @@ colour = args.colour
 inplace = args.inplace
 if inplace:
     colour = False
-        
+
 def dump(obj,output,colour):
     if args.text:
         if type(obj) == dict:
@@ -93,7 +93,7 @@ def main():
         output = sys.stdout
 
     if args.file and len(args.file) > 0:
-        
+
         for f in args.file:
             b='%s.bak'%f
 
@@ -117,9 +117,9 @@ def main():
                     sort(obj)
                 if args.path:
                     obj = parse(obj,args.path.split(','))
-            except: 
+            except:
                 sys.stderr.write('%s\n'%sys.exc_info()[1])
-                    
+
             fp.close()
 
             if inplace:
@@ -128,13 +128,13 @@ def main():
                 fo = output
             else:
                 fo = sys.stdout
-            
+
             dump(obj,fo,colour)
 
             if inplace:
                 fo.close()
     else:
-        
+
         try:
             obj = json.load(sys.stdin)
             if args.sort:
@@ -147,7 +147,7 @@ def main():
 
     if args.output:
         output.close()
-        
+
     return
 
 if __name__ == '__main__': main()

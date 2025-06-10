@@ -9,7 +9,7 @@ import argparse, argcomplete, io
 
 if os.path.dirname(sys.argv[0]) == '.':
 	sys.path.insert(0, '..')
-	
+
 
 from Perdy.eddo import *
 from Perdy.parser import *
@@ -19,7 +19,7 @@ horizon = buildHorizon()
 
 def argue():
     parser = argparse.ArgumentParser()
-    
+
     parser.add_argument('-?',              action='help',       help='show this help')
     parser.add_argument('-v','--verbose',  action='store_true', help='show detailed output')
     parser.add_argument('-c','--colour',   action='store_true', help='show output in colour')
@@ -42,7 +42,7 @@ def argue():
 
 def main():
     args = argue()
-    
+
     colour = args.colour
     areturn = args.attr
     rformat = args.root
@@ -62,7 +62,7 @@ def main():
         output = codecs.open(houtput,'w',encoding=args.encoding)
     else:
         html = False
-    
+
     inplace = args.inplace
     if inplace:
         foutput = None
@@ -133,12 +133,12 @@ def main():
             omitdecl=args.omitdecl
         )
         fp.close()
-        
+
     if foutput:
         output.close()
 
     return
-    
+
 if __name__ == '__main__': main()
 
 

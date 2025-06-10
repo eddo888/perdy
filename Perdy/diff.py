@@ -43,7 +43,7 @@ def diff(lhs,rhs):
     else:
         flhs = list(['%s\n'%x for x in lhs.split('\n')])
         lhs = '<'
-        
+
     if os.path.isdir(rhs):
         rhs = '%s/%s'%(rhs,os.path.basename(lhs))
     if os.path.isfile(rhs):
@@ -51,7 +51,7 @@ def diff(lhs,rhs):
     else:
         frhs = list(['%s\n'%x for x in rhs.split('\n')])
         rhs = '>'
-        
+
     diffs = unified_diff(
             flhs,
             frhs,
@@ -62,7 +62,7 @@ def diff(lhs,rhs):
     )
 
     colours = Colours()
-    
+
     for line in list(diffs):
         if line.startswith('+'):
             sys.stdout.write(colours.Green)

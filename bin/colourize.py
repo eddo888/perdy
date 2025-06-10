@@ -55,7 +55,7 @@ def colourize(input):
                 value = match.group(2)
                 tailer = match.group(last)
                 submatch = matched.match(value)
-                
+
                 if submatch and len(submatch.groups()) > 0:
                     subvalue = submatch.group(1)
                     value = value.replace(subvalue,'%s%s%s'%(colour,subvalue,mycolours.Off))

@@ -5,7 +5,7 @@ import os,re,sys
 from Baubles.Colours import Colours
 
 colours = Colours(colour=True)
-        
+
 def directory(node):
     sys.stdout.write(''.join([
         colours.Orange,
@@ -13,17 +13,17 @@ def directory(node):
         colours.Off,
         '\n'
     ]))
-        
+
     for d in dir(node):
         if d.startswith('_'):
             continue
         v = getattr(node,d,None)
-        
+
         if str(v).startswith('<bound method'):
             colour = colours.Purple
         else:
             colour = colours.Green
-            
+
         sys.stdout.write(''.join([
             '\t',
             colours.Red,
@@ -42,5 +42,5 @@ if __name__ == '__main__':
         def b(self): return 'Bee'
     directory(Teste())
     #directory(colours)
-    
+
 colours.__del__()

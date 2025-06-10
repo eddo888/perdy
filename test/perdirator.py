@@ -31,7 +31,7 @@ print('\ncarriage=""')
 for style in [ Style.JSON, Style.YAML, Style.XML]:
 	prettyPrintLn(source, style=style, carriage=False)
 
-	
+
 
 
 

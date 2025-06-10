@@ -12,7 +12,7 @@ def representer_unicode(dumper, uni):
 def datetime_representer(dumper, dt):
     node = yaml.ScalarNode(tag='tag:yaml.org,2002:timestamp', value=dt.strftime('%Y-%m-%dT%H:%M:%S'))
     return node
-    
+
 # http://stackoverflow.com/questions/16782112/can-pyyaml-dump-dict-items-in-non-alphabetical-order
 
 def represent_ordereddict(dumper, data):
@@ -23,7 +23,7 @@ def represent_ordereddict(dumper, data):
         node_key = dumper.represent_data(item_key)
         node_value = dumper.represent_data(item_value)
         value.append((node_key, node_value))
-        
+
     for item_key in sorted(data.keys()):
         if item_key.startswith('_'):
             add(item_key)
@@ -31,7 +31,7 @@ def represent_ordereddict(dumper, data):
     for item_key in sorted(data.keys()):
         if not item_key.startswith('_'):
             add(item_key)
-            
+
     return yaml.nodes.MappingNode('tag:yaml.org,2002:map', value)
 
 def loadRepresenters():

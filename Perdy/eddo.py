@@ -20,7 +20,7 @@ def getColumns():
   if 'COLUMNS' in os.environ:
     return int(os.environ['COLUMNS'])
   return 80
-  
+
 def buildHorizon(char='-'):
   return getColumns() * char
 

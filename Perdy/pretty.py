@@ -27,12 +27,12 @@ class PrettyPrinter(object):
 	'''
 	print the target object in a pretty way
 	'''
-	def __init__(self, 
-		output=sys.stdout, 
-		colour=True, 
-		html=False, 
-		align=False, 
-		sorted=False, 
+	def __init__(self,
+		output=sys.stdout,
+		colour=True,
+		html=False,
+		align=False,
+		sorted=False,
 		verbose=False,
 		ignore=False,
 		carriage=True,
@@ -54,10 +54,10 @@ class PrettyPrinter(object):
 		else:
 			self.cr = ''
 			self.sp = ''
-			
+
 	def __del__(self):
 		self.colours.__del__()
-		
+
 	#____________________________________________________________
 	def prettify(self, d, indent='', parent=None):
 		t='%s'%type(d)
@@ -65,7 +65,7 @@ class PrettyPrinter(object):
 		name = '%s'%d.__class__.__name__
 		if self.verbose:
 			sys.stderr.write('<%s type="%s"/>\n'%(name,t))
-						
+
 		#........................................................
 		if d is None:
 			if self.style == Style.YAML:
@@ -74,12 +74,12 @@ class PrettyPrinter(object):
 			if not self.style == Style.XML:
 				self.output.write('null')
 			self.output.write(self.colours.Off)
-			
+
 		#........................................................
 		elif type(d) == DotMap:
 			d.__type__ = 'DotMap'
 			self.prettify(d.toDict(), indent, parent)
-			
+
 		#........................................................
 		elif \
 			t == 'org.python.core.PyDictionary' \
@@ -95,7 +95,7 @@ class PrettyPrinter(object):
 					self.colours.Off,
 					self.cr,
 				]))
-			
+
 			if self.style == Style.XML:
 				if not parent:
 					self.output.write(''.join([
@@ -113,18 +113,18 @@ class PrettyPrinter(object):
 				width = max([len(str(x)) for x in list(d.keys())])
 			else:
 				width = 0
-				
+
 			first = True
 			keys = list(d.keys())
-			
+
 			if self.sorted:
 				keys = list(sorted(keys))
-				
+
 			for i in list(range(len(keys))):
 				key = keys[i]
 
 				# if key.startswith('@'): ...
-				
+
 				if self.align:
 					padding = width-len(key)
 				else:
@@ -132,11 +132,11 @@ class PrettyPrinter(object):
 
 				if self.ignore and d[key] is None:
 					continue
-									   
+
 				if self.style == Style.JSON:
-					self.output.write('%s%s'%(indent, self.sp))					
+					self.output.write('%s%s'%(indent, self.sp))
 					self.output.write('"')
-					
+
 				if self.style == Style.XML:
 					# @ and # tokens
 					if False: #key.startswith('@'):
@@ -174,7 +174,7 @@ class PrettyPrinter(object):
 					self.output.write(self.colours.Teal)
 				else:
 					self.output.write(self.colours.Green)
-				
+
 				if self.style != Style.XML:
 					self.output.write('%s'%key)
 				self.output.write(self.colours.Off)
@@ -185,13 +185,13 @@ class PrettyPrinter(object):
 					self.output.write('"%s:'%(' '*padding))
 
 				self.prettify(d[key], indent='%s%s'%(indent,self.sp), parent=d)
-								
+
 				if self.style == Style.YAML:
 					if i < (len(keys)-1):
 						self.output.write('\n')
 						if type(parent) == list:
 							self.output.write(indent[:-2])
-							
+
 				if self.style == Style.XML:
 					self.output.write(''.join([
 						self.colours.Off,
@@ -203,18 +203,18 @@ class PrettyPrinter(object):
 						'>',
 						self.cr,
 					]))
-					
+
 				if self.style == Style.JSON:
 					if i < (len(keys) - 1):
 						self.output.write(',')
 					self.output.write(self.cr)
-					
+
 			if self.style == Style.JSON:
 				self.output.write('%s'%indent)
 				self.output.write(self.colours.Purple)
 				self.output.write('}')
 				self.output.write(self.colours.Off)
-				
+
 			if self.style == Style.XML:
 				if not parent:
 					self.output.write(''.join([
@@ -227,7 +227,7 @@ class PrettyPrinter(object):
 						'>',
    						self.cr,
 					]))
-					
+
 		#........................................................
 		elif \
 			t == 'org.python.core.PyList' \
@@ -238,7 +238,7 @@ class PrettyPrinter(object):
 				self.bracket(d,'[',']','Teal','%s%s'%(indent,self.sp))
 			else:
 				self.bracket(d,'','','Teal','%s%s'%(self.sp,indent))
-				
+
 		#........................................................
 		elif \
 			t == 'org.python.core.PyTuple' \
@@ -249,7 +249,7 @@ class PrettyPrinter(object):
 				self.bracket(d,'(',')','Orange','%s%s'%(self.sp,indent))
 			else:
 				self.bracket(d,'','','Orange','%s%s'%(indent, self.sp))
-				
+
 		#........................................................
 		elif \
 			t == 'org.python.core.PyString' \
@@ -263,7 +263,7 @@ class PrettyPrinter(object):
 					self.output.write('"')
 				self.output.write(self.colours.Red)
 				_new = '%s'%d.replace('\r','\\r').replace('\n','\\n')
-				
+
 				if self.style == Style.JSON:
 					_new = _new.replace('"','\\"')
 
@@ -271,7 +271,7 @@ class PrettyPrinter(object):
 					_new = _new.replace('&','&amp;')
 					_new = _new.replace('>','&gt;')
 					_new = _new.replace('<','&lt;')
-					
+
 				self.output.write(_new)
 				self.output.write(self.colours.Off)
 				if self.style == Style.JSON and len(self.walked) == 0:
@@ -319,7 +319,7 @@ class PrettyPrinter(object):
 				self.output.write('%s'%d)
 
 		return
-		
+
 	#____________________________________________________________
 	def bracket(self, d, start, end, colour, indent):
 
@@ -341,10 +341,10 @@ class PrettyPrinter(object):
 			]))
 		if self.style == Style.YAML:
 			self.output.write('\n')
-		
+
 		if self.style == Style.YAML and len(indent) == 0:
 			indent = self.sp
-			 
+
 		for i in range(len(d)):
 
 			if self.style == Style.YAML:
@@ -352,7 +352,7 @@ class PrettyPrinter(object):
 				if type(d[i]) in [dict,collections.OrderedDict]:
 					self.output.write(' ')
 				self.prettify(d[i], indent='%s'%indent, parent=d)
-				
+
 			if self.style == Style.XML:
 				self.output.write(''.join([
 					self.colours.Off,
@@ -363,12 +363,12 @@ class PrettyPrinter(object):
 					self.colours.Off,
 					'>',
 				]))
-				self.prettify(d[i], indent='%s%s'%(indent,self.sp), parent=d)  
-				
+				self.prettify(d[i], indent='%s%s'%(indent,self.sp), parent=d)
+
 			if self.style == Style.JSON:
 				self.output.write('%s'%indent)
 				self.prettify(d[i], indent='%s'%indent, parent=d)
-				
+
 			if len(self.walked) == 0 and i < (len(d) - 1):
 				if self.style == Style.JSON:
 					self.output.write(',')
@@ -384,17 +384,17 @@ class PrettyPrinter(object):
 					self.colours.Off,
 					'>',
 					self.cr
-				]))   
-				
+				]))
+
 			if self.style == Style.JSON:
 				self.output.write(self.cr)
-				
+
 		if self.style == Style.JSON:
 			self.output.write('%s'%indent[:-2])
 			self.output.write(getattr(self.colours,colour))
 			self.output.write('%s'%end)
 			self.output.write(self.colours.Off)
-			
+
 		if self.style == Style.XML:
 			self.output.write(''.join([
 				'%s'%indent,
@@ -405,28 +405,28 @@ class PrettyPrinter(object):
 				self.colours.Off,
 				'>',
 				self.cr,
-			]))	
+			]))
 		return
 
 #================================================================
 def prettyPrint(
-	object, 
-	output=sys.stdout, 
-	colour=True, 
-	align=False, 
-	html=False, 
-	sorted=False, 
-	verbose=False, 
+	object,
+	output=sys.stdout,
+	colour=True,
+	align=False,
+	html=False,
+	sorted=False,
+	verbose=False,
 	ignore=False,
 	carriage=True,
 	style=Style.JSON
 ):
 	printer = PrettyPrinter(
-		output=output, 
-		colour=colour, 
+		output=output,
+		colour=colour,
 		align=align,
-		html=html, 
-		sorted=sorted, 
+		html=html,
+		sorted=sorted,
 		verbose=verbose,
 		ignore=ignore,
 		carriage=carriage,
@@ -437,24 +437,24 @@ def prettyPrint(
 	return
 
 def prettyPrintLn(
-	object, 
-	output=sys.stdout, 
-	colour=True, 
-	align=False, 
-	html=False, 
-	sorted=False, 
+	object,
+	output=sys.stdout,
+	colour=True,
+	align=False,
+	html=False,
+	sorted=False,
 	verbose=False,
 	ignore=False,
 	carriage=True,
 	style=Style.JSON
 ):
 	prettyPrint(
-		object, 
-		output=output, 
-		colour=colour, 
-		align=align, 
-		html=html, 
-		sorted=sorted, 
+		object,
+		output=output,
+		colour=colour,
+		align=align,
+		html=html,
+		sorted=sorted,
 		verbose=verbose,
 		ignore=ignore,
 		carriage=carriage,
@@ -462,10 +462,10 @@ def prettyPrintLn(
 	)
 	output.write('\n')
 	return
-	
+
 def test(prettyPyson):
 	assert prettyPyson["hello"] == "th\"ere"
-	assert prettyPyson["you"] in [0, '0'] 
+	assert prettyPyson["you"] in [0, '0']
 	#assert type(prettyPyson["you"]) == int
 	assert prettyPyson["object"]["isfalse"] in [False,'false']
 	assert prettyPyson["object"]["istrue"] in [True,'true']
@@ -475,10 +475,10 @@ def test(prettyPyson):
 	assert prettyPyson["array"][3]["a"] == "A"
 	assert prettyPyson["array"][3]["b"] == "B"
 	return
-	
+
 #================================================================
 def main():
-		
+
 	js = """\
 {
   "array" : [
@@ -547,29 +547,29 @@ you: 0"""
 	pyson = json.loads(js)
 	#print pyson
 	#print
-	
+
 	so = StringIO()
 	printer = PrettyPrinter(output=so, colour=False, sorted=True)
 	printer.prettify(pyson)
 	prettyJson = so.getvalue()
-	#print prettyJson 
+	#print prettyJson
 	printer.__del__()
 
 	diff(js, prettyJson)
 	assert prettyJson == js
-		
+
 	prettyPyson = json.loads(prettyJson)
 	test(prettyPyson)
-	
-	if True: 
+
+	if True:
 		prettyPrint(prettyPyson)
 		print()
 		print()
-		
+
 		prettyPrint(prettyPyson, verbose=False, style=Style.YAML)
 		print()
 		print()
-	
+
 	so = StringIO()
 	printer = PrettyPrinter(output=so, colour=False, sorted=True, style=Style.YAML)
 	printer.prettify(pyson)
@@ -580,19 +580,19 @@ you: 0"""
 	diff(ym, prettyYaml)
 	assert prettyYaml == ym
 	test(prettyPyson)
-	
+
 	so = StringIO()
 	printer = PrettyPrinter(output=so, colour=False, style=Style.XML)
 	printer.prettify(pyson)
 	prettyXml = so.getvalue()
 	#printXML(prettyXml)
-	
+
 	prettyPyson = xmltodict.parse(prettyXml)['xml']
 	#prettyPrint(prettyPyson)
 	#diff(ym, prettyYa)
 	#assert prettyYaml == ym
 	#test(prettyPyson)
-	
+
 	withNulls = dict(
 		notNull='i am not null',
 		isNull=None,
@@ -607,42 +607,42 @@ you: 0"""
 			),
 		],
 	)
-	
+
 	so = StringIO()
 	notNullPrinter = PrettyPrinter(output=so, colour=False, ignore=True, style=Style.JSON)
 	notNullPrinter.prettify(withNulls)
 	prettyNotNull = so.getvalue()
 	print(prettyNotNull)
 	#assert(prettyNotNull==nn)
-	
+
 	if False:
 		print()
 		prettyPrint(pyson, verbose=False, style=Style.XML, colour=True)
-		
-   
+
+
 	if False:
 		print()
 		print()
 		dad = TestPrettyObject()
 		dad.name = 'Dad'
-	
+
 		mum = TestPrettyObject(name='Mum')
 		mum.partner = dad
 		dad.partner = mum
-		
+
 		son = TestPrettyObject(name='Son')
 		sis = TestPrettyObject(name='Sis')
-	
-		dad.children = [son]	
+
+		dad.children = [son]
 		dad.children.append(sis)
-		
+
 		mum.children.append(son)
 		mum.children.append(sis)
-	
+
 		printer = PrettyPrinter(colour=True,verbose=False)
 		printer.prettify(dad)
 		printer.__del__()
-		
+
 	return
 
 #================================================================

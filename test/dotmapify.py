@@ -10,4 +10,4 @@ from Perdy.pretty import prettyPrintLn
 doc = DotMap(dict(root='opml', nodes=[]))
 
 prettyPrintLn(doc)
-	
+
