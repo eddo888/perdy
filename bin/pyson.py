@@ -16,6 +16,8 @@ and Perl version by Kate Rhodes at:
 
 import sys, os, re, argparse, argcomplete, json, jsonpath, codecs
 
+#sys.path.insert(0,'..')
+
 from Perdy.eddo import *
 from Perdy.pretty import *
 

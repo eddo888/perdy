@@ -27,6 +27,7 @@ class PrettyPrinter(object):
 	'''
 	print the target object in a pretty way
 	'''
+
 	def __init__(self,
 		output=sys.stdout,
 		colour=True,
@@ -328,6 +329,7 @@ class PrettyPrinter(object):
 				getattr(self.colours,colour),
 				'%s'%start,
 				self.colours.Off,
+				'\n',
 			]))
 		if self.style == Style.XML:
 			self.output.write(''.join([
@@ -506,7 +508,7 @@ def main():
 	"isfalse" : false,
 	"istrue" : true
   },
-  "you" : 0
+  "you":0
 }"""
 
 	ym="""\
