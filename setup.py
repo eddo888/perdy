@@ -8,12 +8,12 @@ pwd = path.abspath(path.dirname(__file__))
 with codecs.open(path.join(pwd, 'README.md'), 'r', encoding='utf8') as input:
     long_description = input.read()
 
-version='1.17'
+version='1.18'
 
 setup(
-	name='Perdy',
-	version=version,
-	license='MIT',
+	Name='Perdy',
+	Version=version,
+	License='MIT',
     long_description=long_description,
 	long_description_content_type="text/markdown",
 	url='https://github.com/eddo888/perdy',
