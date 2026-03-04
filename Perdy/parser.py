@@ -35,9 +35,21 @@ def doParse(
 	comments=False,
 	fname=None,
 	encoding=None,
-	omitdecl=False
+	omitdecl=False,
+	indent='	',
 ):
-	myParser = MyParser(colour=colour, areturn=areturn, rformat=rformat, html=html, output=output, preserve=preserve, comments=comments, encoding=encoding, omitdecl=omitdecl)
+	myParser = MyParser(
+		colour=colour,
+		areturn=areturn,
+		rformat=rformat,
+		html=html,
+		output=output,
+		preserve=preserve,
+		comments=comments,
+		encoding=encoding,
+		omitdecl=omitdecl,
+		indent=indent,
+	)
 	if True: #try:
 		xml = input.read()
 		myParser.parser.Parse(xml)
@@ -55,14 +67,24 @@ def doParse(
 	return
 
 
-def printXML(xml, colour=False, areturn=False, rformat=False,output=sys.stdout, encoding=None, omitdecl=False):
+def printXML(
+	xml,
+	colour=False,
+	areturn=False,
+	rformat=False,
+	output=sys.stdout,
+	encoding=None,
+	omitdecl=False,
+	indent='	',
+):
 	myParser = MyParser(
 		colour=colour,
 		rformat=rformat,
 		areturn=areturn,
 		output=output,
 		encoding=encoding,
-		omitdecl=omitdecl
+		omitdecl=omitdecl,
+		indent=indent,
 	)
 	myParser.parser.Parse(xml)
 	del myParser
@@ -81,7 +103,18 @@ class MyParser:
 
 	state = stateEndLast
 
-	def __init__(self, colour=False, areturn=False, rformat=False, html=False, output=sys.stdout, preserve=False, comments=True, encoding=None, omitdecl=False):
+	def __init__(self,
+		colour=False,
+		areturn=False,
+		rformat=False,
+		html=False,
+		output=sys.stdout,
+		preserve=False,
+		comments=True,
+		encoding=None,
+		omitdecl=False,
+		indent='	',
+	):
 
 		self.output = output
 		self.lt='<'
@@ -90,7 +123,7 @@ class MyParser:
 		self.quot='\"'
 		self.apos='\''
 		self.lf='\n'
-		self.indentChar = '	'
+		self.indentChar = indent
 		self.preserve = preserve
 		self.colours = Colours(colour=colour, html=html)
 		self.encoding = encoding
@@ -110,18 +143,18 @@ class MyParser:
 
 		self.parser = xml.parsers.expat.ParserCreate(encoding=self.encoding)
 
-		self.parser.StartElementHandler		  = self.startElementHandler
-		self.parser.EndElementHandler			= self.endElementHandler
-		self.parser.CharacterDataHandler		 = self.characterDataHandler
-		self.parser.StartCdataSectionHandler	 = self.startCdataSectionHandler
-		self.parser.EndCdataSectionHandler	   = self.endCdataSectionHandler
-		self.parser.XmlDeclHandler			   = self.xmlDeclHandler
-		self.parser.StartDoctypeDeclHandler	  = self.startDoctypeDeclHandler
-		self.parser.EndDoctypeDeclHandler		= self.endDoctypeDeclHandler
+		self.parser.StartElementHandler = self.startElementHandler
+		self.parser.EndElementHandler = self.endElementHandler
+		self.parser.CharacterDataHandler = self.characterDataHandler
+		self.parser.StartCdataSectionHandler = self.startCdataSectionHandler
+		self.parser.EndCdataSectionHandler = self.endCdataSectionHandler
+		self.parser.XmlDeclHandler = self.xmlDeclHandler
+		self.parser.StartDoctypeDeclHandler = self.startDoctypeDeclHandler
+		self.parser.EndDoctypeDeclHandler = self.endDoctypeDeclHandler
 		self.parser.ProcessingInstructionHandler = self.processingInstructionHandler
 
 		if comments:
-			self.parser.CommentHandler		   = self.commentHandler
+			self.parser.CommentHandler = self.commentHandler
 
 		#		 Doctype => \&handle_doctype,
 		#		 Proc => => \&handle_proc,
@@ -441,7 +474,12 @@ class MyParser:
 		return
 
 
-	def startDoctypeDeclHandler(self, doctypeName, systemId, publicId, has_internal_subset):
+	def startDoctypeDeclHandler(self,
+		doctypeName,
+		systemId,
+		publicId,
+		has_internal_subset
+	):
 		if self.omitdecl: return
 
 		self.output.write((self.indent) * self.indentChar)
@@ -564,7 +602,7 @@ def main():
 	print()
 
 	sio = StringIO(xml)
-	doParse(sio, sys.stdout, colour=True, rformat=True)
+	doParse(sio, sys.stdout, colour=True, rformat=True, indent='  ')
 
 
 if __name__ == '__main__': main()
