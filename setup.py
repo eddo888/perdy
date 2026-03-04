@@ -8,11 +8,11 @@ pwd = path.abspath(path.dirname(__file__))
 with codecs.open(path.join(pwd, 'README.md'), 'r', encoding='utf8') as input:
     long_description = input.read()
 
-version='1.15'
+version='1.16'
 
 setup(
-	name='Perdy',
-	version=version,
+	Name='Perdy',
+	Version=version,
 	license='MIT',
     long_description=long_description,
 	long_description_content_type="text/markdown",
