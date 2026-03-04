@@ -11,9 +11,9 @@ with codecs.open(path.join(pwd, 'README.md'), 'r', encoding='utf8') as input:
 version='1.18'
 
 setup(
-	Name='Perdy',
-	Version=version,
-	License='MIT',
+	name='Perdy',
+	version=version,
+	license='MIT',
     long_description=long_description,
 	long_description_content_type="text/markdown",
 	url='https://github.com/eddo888/perdy',
