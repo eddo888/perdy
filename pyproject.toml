@@ -28,9 +28,9 @@ Homepage = "https://github.com/eddo888/Perdy"
 Issues = "https://github.com/eddo888/Perdy/issues"
 
 [project.scripts]
-parser.py = "Perdy.bin.parser:main"
-pyson.py = "Perdy.bin.pyson:main"
-colourize.py = "Perdy.bin.colourize:main"
+parser = "Perdy.bin.parser:main"
+pyson = "Perdy.bin.pyson:main"
+colourize = "Perdy.bin.colourize:main"
 
 [build-system]
 requires = ["setuptools >= 77.0.3"]
