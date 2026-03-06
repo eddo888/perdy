@@ -1,0 +1,37 @@
+[project]
+name = "Perdy"
+version = "1.20"
+authors = [
+  { name="David Edson", email="david.edson@gmail.com" },
+]
+description = "pretty print items in colour"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+dependencies = [
+	"pytz",
+	"arrow",
+	"dotmap",
+	"xmltodict",
+	"PyYAML",
+	"jsonpath",
+    "argcomplete",
+	"Baubles",
+]
+[project.urls]
+Homepage = "https://github.com/eddo888/Perdy"
+Issues = "https://github.com/eddo888/Perdy/issues"
+
+[project.scripts]
+parser.py = "Perdy.bin.parser:main"
+pyson.py = "Perdy.bin.pyson:main"
+colourize.py = "Perdy.bin.colourize:main"
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
